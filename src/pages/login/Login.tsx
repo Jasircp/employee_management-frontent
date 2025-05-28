@@ -11,10 +11,16 @@ export const Login = () => {
     let [userName, setUsername] = useState(localStorage.getItem('username') || "");
     let [password, setPassword] = useState('');
     const usernameRef = useRef<HTMLInputElement>(null);
-    let mousePosition = useMousePosition();
-    let [showPassword, setShowPassword] = useState(() => {
-        return localStorage.getItem('showpassword') =='true'
-    });
+    // let mousePosition = useMousePosition();
+    let [showPassword, setShowPassword] = useState(false);
+
+    const handleLogIn = ()=> {
+        if(userName == "username" && password == "password")
+            localStorage.setItem("isLoggedIn", "true");
+        else{
+            alert("Invalid Credentials");
+        }
+    }
 
     // let [msg, setmsg] = useState('');
 
@@ -44,10 +50,10 @@ export const Login = () => {
             <img src={loginImage} className="profile"/>
             </div>
             <div className="right-panel">
-               <div>
+               {/* <div>
                  <p>X-coordinate {mousePosition.x}</p>
                 <p>Y-coordinate {mousePosition.y}</p>
-               </div>
+               </div> */}
             <div className="login-box">
                 <img src={logo} className="logo"/>
                 
@@ -65,7 +71,8 @@ export const Login = () => {
                     <input type="checkbox" id="showpassword" name="showpassword" onClick={()=> setShowPassword(!showPassword)}></input>
                 </div>
                 
-                <Button className="login-button" description="LogIn"></Button>
+                <Button className="login-button"  description="LogIn"
+                onClick={handleLogIn}></Button>
                 </form>
             </div>
             </div>

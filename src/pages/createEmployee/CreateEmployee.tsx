@@ -1,17 +1,15 @@
 import { Input } from "../../components/input/Input"
 import { SelectInput } from "../../components/selectInput/SelectInput"
 import "./CreateEmployee.css"
-import { Sidebar } from "../../components/sidebar/Sidebar"
 import { Header } from "../../components/header/Header"
 import { Button } from "../../components/button/Button"
 
 export const CreateEmployee = () => {
     return (
         <>
-         <Sidebar></Sidebar>
         <main>
             <div className="create-employee">
-                <div className="topbar"></div>
+                
                 <Header title="Create Employee"></Header>
                 <div className="employee-form">
                     <form action="POST">

@@ -1,6 +1,6 @@
 import "./Layout.css"
 import { Sidebar } from "../sidebar/Sidebar"
-import { Header } from "../header/Header"
+import { Outlet } from "react-router-dom"
 export const Layout = () => {
     return(
         <>
@@ -8,7 +8,8 @@ export const Layout = () => {
         <main>
             <Sidebar></Sidebar>
             <div className="create-employee">
-                <Header title="Create Employee"></Header>
+                <div className="topbar"></div>
+                <Outlet/>
             </div>
         </main>
                 </>
