@@ -1,0 +1,7 @@
+.title {
+    margin: 10px;
+    padding: 20px;
+    text-wrap: nowrap;
+    box-shadow: 5px 10px 8px #d4d2d2;
+    border-radius: 10px;
+}

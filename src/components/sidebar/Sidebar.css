@@ -1,0 +1,32 @@
+.sidebar {
+    width: 300px;
+    height: 100%;
+    position: fixed;
+    background-color: #fff;
+    box-shadow: 5px 10px 8px #d4d2d2;
+}
+
+.logo img{
+    background-color: #FAFAFA;
+    width: 200%;
+    margin-top: 5px;
+}
+
+.sidebar-items{
+    margin-top: 10px;
+    background-color: #03AEEE;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 20px;
+    border-radius: 50px 0px 0px 50px;
+}
+
+.sidebar-items > img{ 
+    background-color: #fff;
+    border-radius: 100%;
+    width: 30px;
+    border: 2px;
+    padding: 5px;
+}
