@@ -1,0 +1,21 @@
+.address-empID {
+    display: flex;
+    flex-direction: row;
+}
+
+.employee-details-id {
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 32%;
+}
+
+.employee-details-id input {
+    height: 50px;
+    border-radius: 5px;
+    border: thin solid #d4d2d2;
+    padding-left: 15px;
+    background-color: #D1D1D1;
+
+}

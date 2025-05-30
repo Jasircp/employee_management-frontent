@@ -3,6 +3,7 @@ import { SelectInput } from "../../components/selectInput/SelectInput"
 import "./CreateEmployee.css"
 import { Header } from "../../components/header/Header"
 import { Button } from "../../components/button/Button"
+import { Address } from "../../components/address/Address"
 
 export const CreateEmployee = () => {
     return (
@@ -15,6 +16,8 @@ export const CreateEmployee = () => {
                     <form action="POST">
                         <div className="form-main">
                             <Input label="Employee Name" type="text" placeholder="Employee Name" name="employee_name"></Input>
+                            <Input label="Email" type="email" placeholder="Email" name="employee_email"></Input>
+                            <Input label="Age" type="number" placeholder="Age" name="employee_age"></Input>
                             <Input label="Joining date" type="text" placeholder="Joining Date" name="joining_date"></Input>
                             <Input label="Experience" type="number" placeholder="Experience in Years" name="experience"></Input>
 
@@ -23,13 +26,7 @@ export const CreateEmployee = () => {
                             <SelectInput label="Status" id="status" name="status" values={["Active","Inactive", "Probation"]}></SelectInput>
                             
                         </div>
-                        <div className="form-address">
-                            <label>Address</label>
-                            <input type="text" placeholder="Flat No. / House No." name="house_number"/>
-                            <input type="text" placeholder="Address Line 1" name="addrees_line_1"/>
-                            <input type="text" placeholder="Address Line 2" name="addrees_line_2"/>
-                            
-                        </div>
+                        <Address />
                         <div className="button-group">
                             <Button className="submit-button" description="Create"/>
                             <Button className="reset-button" description="Cancel"/>

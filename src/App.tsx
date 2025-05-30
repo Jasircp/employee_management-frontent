@@ -1,36 +1,31 @@
 import './App.css'
 import { Login } from './pages/login/Login'
 import { CreateEmployee } from './pages/createEmployee/CreateEmployee'
-import { Layout } from './components/layout/Layout'
+import { EditEmployee } from './pages/editEmployee/EditEmployee'
+import { EmployeeDetails } from './pages/employeeDetails/EmployeeDetails'
+import { EmployeeList } from './pages/employeeList/EmployeeList'
+import { ProtectedLayout } from './components/layout/ProtectedLayout'
 import NotFound from './components/notFound/NotFound'
-import UncontrolledLogin from './pages/login/UncontrolledLogin'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
-
-const isLoggedIn = ()=>{
-  const token = localStorage.getItem("isLoggedIn");
-  return token === "true";
-}
 
 
 const router = createBrowserRouter([
   {
     path:"/",
-    element: isLoggedIn()? <Navigate to="/employees" /> : <Login />,
-  },
-  {
+    element:<Navigate to="/login" />
   },
   {
     path:"/login",
-    element: isLoggedIn()? <Navigate to="/employees" /> : <Login />
+    element: <Login />
   },
   {
     path:"/employees",
-    element:isLoggedIn()?<Layout />:<Login />,
+    element:<ProtectedLayout />,
     children: [
-      {
-        index: true, element:<CreateEmployee />
-        //element 2
-      }
+      {index: true, element:<EmployeeList />},
+      {path:"edit/:id", element:<EditEmployee />},
+      {path:"details/:id", element:<EmployeeDetails />},
+      {path:"create", element:<CreateEmployee />}
     ]
   },
   {

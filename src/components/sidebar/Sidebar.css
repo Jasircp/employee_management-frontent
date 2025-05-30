@@ -8,7 +8,7 @@
 
 .logo img{
     background-color: #FAFAFA;
-    width: 220%;
+    width: 300px;
 }
 
 .sidebar-items{
@@ -28,4 +28,8 @@
     width: 30px;
     border: 2px;
     padding: 5px;
+}
+
+.sidebar-items:hover {
+    cursor: pointer;
 }

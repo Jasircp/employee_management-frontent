@@ -5,19 +5,24 @@ import { Button } from "../../components/button/Button"
 import { LoginInput } from "../../components/loginInput/LoginInput"
 import { useState, useEffect, useRef } from "react"
 import useMousePosition from "../../hooks/useMousePosition"
+import useLocalStorage from "../../hooks/useLocalStorage"
+import { useNavigate } from "react-router-dom"
 
 
 export const Login = () => {
-    let [userName, setUsername] = useState(localStorage.getItem('username') || "");
+    let [userName, setUsername] = useState("")
     let [password, setPassword] = useState('');
     const usernameRef = useRef<HTMLInputElement>(null);
     // let mousePosition = useMousePosition();
-    let [showPassword, setShowPassword] = useState(false);
+    let [showPassword, setShowPassword] = useLocalStorage("showPassord", false)
+    const navigate = useNavigate();
 
     const handleLogIn = ()=> {
-        if(userName == "username" && password == "password")
+        if(userName == "username" && password == "password"){
             localStorage.setItem("isLoggedIn", "true");
-        else{
+            navigate('/employees');
+            
+        }else{
             alert("Invalid Credentials");
         }
     }
@@ -38,11 +43,6 @@ export const Login = () => {
             usernameRef.current.focus();
     },[])
     
-    useEffect(() => {
-        localStorage.setItem('username',userName)
-
-    },[userName])
-
     return(
         <>
         <div className="container">
@@ -62,16 +62,16 @@ export const Login = () => {
                 value={userName}
                 onChange={(event:any)=> setUsername(event.target.value)}
                 inputref={usernameRef}
-                endAdornment={<button onClick={()=> setUsername('')}>Clear</button>}></LoginInput>
+                endAdornment={<button disabled={(userName.length > 0 )? false:true} onClick={()=> setUsername('')}>Clear</button>}></LoginInput>
                 <LoginInput type={showPassword?'text':'password'} id="password" name="password" placeholder="" label="Password"
                 value={password}
                 onChange={(event:any)=> setPassword(event.target.value)}></LoginInput>
                 <div>
                     <label>Show Password</label>
-                    <input type="checkbox" id="showpassword" name="showpassword" onClick={()=> setShowPassword(!showPassword)}></input>
+                    <input type="checkbox" id="showpassword" name="showpassword" checked={showPassword} onChange={(e)=> setShowPassword(e.target.checked)}></input>
                 </div>
                 
-                <Button className="login-button"  description="LogIn"
+                <Button className="login-button" disabled={(userName.length > 0 && password.length > 0)?false:true} description="LogIn"
                 onClick={handleLogIn}></Button>
                 </form>
             </div>
