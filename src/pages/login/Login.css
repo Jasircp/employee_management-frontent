@@ -52,3 +52,9 @@
 .login-button:hover {
   background-color: #009bd1;
 }
+
+.show-password {
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+}

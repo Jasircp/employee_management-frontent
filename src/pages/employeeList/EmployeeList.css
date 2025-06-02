@@ -64,11 +64,6 @@
     cursor: pointer;
 }
 
-.create-employee-button > div {
-    /* display: flex; */
-    /* font-size: medium; */
-}
-
 .plus-icon {
     background-color: #00a4ee;
     color: white;
@@ -107,7 +102,7 @@
 .employee-list-element {
     display: flex;
     flex-direction: row;
-    /* gap: 15px; */
+    gap: 15px;
     padding: 10px;
     padding-left: 10px;
     margin-bottom: 20px;

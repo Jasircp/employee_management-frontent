@@ -5,79 +5,82 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Button } from "../../components/button/Button";
 import { Modal } from "../../components/modal/Modal";
 import { useMemo, useState } from 'react'
+import { useSelector } from "react-redux";
+import type { EmployeeState } from "../../store/employee/employee.types";
 
-const employees = [
-        {
-            id:1,
-            employeeName:"John Doe",
-            joiningDate:"01/01/2025",
-            experience:2,
-            role:"Full Stack",
-            status:"Probation",
-            address:{
-                houseNo:"No:C-9",
-                line1:"T.V.K Industrial Estate",
-                line2:"Kerala 600032"
-            },
-            employeeId:"KV100"
-        },
-        {
-            id:2,
-            employeeName:"Johny Doe",
-            joiningDate:"01/01/2025",
-            experience:2,
-            role:"Full Stack",
-            status:"Inactive",
-            address:{
-                houseNo:"No:C-0",
-                line1:"T.V.K Industrial Estate",
-                line2:"Kochin 600032"
-            },
-            employeeId:"KV101"
-        },
-        {
-            id:3,
-            employeeName:"Joe",
-            joiningDate:"01/01/2025",
-            experience:5,
-            role:"Full Stack",
-            status:"Active",
-            address:{
-                houseNo:"No:C-103",
-                line1:"Smart City Kakkanad",
-                line2:"Kerala 600032"
-            },
-            employeeId:"KV102"
-        },
-        {
-            id:4,
-            employeeName:"Joe",
-            joiningDate:"01/01/2025",
-            experience:5,
-            role:"Full Stack",
-            status:"Active",
-            address:{
-                houseNo:"No:C-103",
-                line1:"Smart City Kakkanad",
-                line2:"Kerala 600032"
-            },
-            employeeId:"KV102"
-        },
-        {
-            id:5,
-            employeeName:"Joe",
-            joiningDate:"01/01/2025",
-            experience:5,
-            role:"Full Stack",
-            status:"Inactive",
-            address:{
-                houseNo:"No:C-103",
-                line1:"Smart City Kakkanad",
-                line2:"Kerala 600032"
-            },
-            employeeId:"KV102"
-        },
-    ]
+// const employees = [
+//         {
+//             id:1,
+//             employeeName:"John Doe",
+//             joiningDate:"01/01/2025",
+//             experience:2,
+//             role:"Full Stack",
+//             status:"Probation",
+//             address:{
+//                 houseNo:"No:C-9",
+//                 line1:"T.V.K Industrial Estate",
+//                 line2:"Kerala 600032"
+//             },
+//             employeeId:"KV100"
+//         },
+//         {
+//             id:2,
+//             employeeName:"Johny Doe",
+//             joiningDate:"01/01/2025",
+//             experience:2,
+//             role:"Full Stack",
+//             status:"Inactive",
+//             address:{
+//                 houseNo:"No:C-0",
+//                 line1:"T.V.K Industrial Estate",
+//                 line2:"Kochin 600032"
+//             },
+//             employeeId:"KV101"
+//         },
+//         {
+//             id:3,
+//             employeeName:"Joe",
+//             joiningDate:"01/01/2025",
+//             experience:5,
+//             role:"Full Stack",
+//             status:"Active",
+//             address:{
+//                 houseNo:"No:C-103",
+//                 line1:"Smart City Kakkanad",
+//                 line2:"Kerala 600032"
+//             },
+//             employeeId:"KV102"
+//         },
+//         {
+//             id:4,
+//             employeeName:"Joe",
+//             joiningDate:"01/01/2025",
+//             experience:5,
+//             role:"Full Stack",
+//             status:"Active",
+//             address:{
+//                 houseNo:"No:C-103",
+//                 line1:"Smart City Kakkanad",
+//                 line2:"Kerala 600032"
+//             },
+//             employeeId:"KV102"
+//         },
+//         {
+//             id:5,
+//             employeeName:"Joe",
+//             joiningDate:"01/01/2025",
+//             experience:5,
+//             role:"Full Stack",
+//             status:"Inactive",
+//             address:{
+//                 houseNo:"No:C-103",
+//                 line1:"Smart City Kakkanad",
+//                 line2:"Kerala 600032"
+//             },
+//             employeeId:"KV102"
+//         },
+//     ]
+
 
 
 export const EmployeeList = () => {
@@ -106,7 +109,7 @@ export const EmployeeList = () => {
         setModalIsOpen(false)
     }
     
-
+    const employees = useSelector((state:EmployeeState)=> state.employees)
     const status = searchParams.get("status") || "all"
     const statusOptions = ["All", "Active", "Inactive", "Probation"]
 
@@ -129,7 +132,7 @@ export const EmployeeList = () => {
     const filteredEmployees = useMemo(
         () => {
             if(status === "all") return employees
-            else return employees.filter((employee) => 
+            else return employees.filter((employee:any) => 
                 // console.log(employee.status)
                employee.status.toLowerCase() === status
            )
@@ -170,14 +173,14 @@ export const EmployeeList = () => {
             </div>
 
             {
-                filteredEmployees.map((employee)=> {
+                filteredEmployees.map((employee:any)=> {
                     return <div className='employee-list-element' onClick={() => viewEmployee(employee.id)}>
                         <p>{employee.employeeName}</p>
                         <p>{employee.employeeId}</p>
                         <p>{employee.joiningDate}</p>
                         <p>{employee.role}</p>
                         <p><div className={`span ${employee.status.toLowerCase()}`}>{employee.status}</div></p>
-                        <p>{employee.experience}</p>
+                        <p>{employee.experience} Years</p>
                         <div className='action-buttons'>
                             <img onClick={(e)=> {
                                 e.stopPropagation()

@@ -4,7 +4,7 @@ import logo from "../../assets/images/kv-logo.png"
 import { Button } from "../../components/button/Button"
 import { LoginInput } from "../../components/loginInput/LoginInput"
 import { useState, useEffect, useRef } from "react"
-import useMousePosition from "../../hooks/useMousePosition"
+
 import useLocalStorage from "../../hooks/useLocalStorage"
 import { useNavigate } from "react-router-dom"
 
@@ -42,6 +42,7 @@ export const Login = () => {
         if(usernameRef.current)
             usernameRef.current.focus();
     },[])
+
     
     return(
         <>
@@ -66,7 +67,7 @@ export const Login = () => {
                 <LoginInput type={showPassword?'text':'password'} id="password" name="password" placeholder="" label="Password"
                 value={password}
                 onChange={(event:any)=> setPassword(event.target.value)}></LoginInput>
-                <div>
+                <div className="show-password">
                     <label>Show Password</label>
                     <input type="checkbox" id="showpassword" name="showpassword" checked={showPassword} onChange={(e)=> setShowPassword(e.target.checked)}></input>
                 </div>

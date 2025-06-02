@@ -14,6 +14,8 @@ export const EditEmployee = () => {
         {
             id:1,
             employeeName:"John Doe",
+            email:"123@gmail.com",
+            age:30,
             joiningDate:"01/01/2025",
             experience:2,
             department:"HR",
@@ -22,13 +24,16 @@ export const EditEmployee = () => {
             address:{
                 houseNo:"No:C-9",
                 line1:"T.V.K Industrial Estate",
-                line2:"Kerala 600032"
+                line2:"Kerala 600032",
+                pincode:"12345"
             },
             employeeId:"KV100"
         },
         {
             id:2,
             employeeName:"Johny Doe",
+             email:"123@gmail.com",
+            age:30,
             joiningDate:"01/01/2025",
             experience:2,
             department:"Admin",

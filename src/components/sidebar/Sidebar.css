@@ -33,3 +33,7 @@
 .sidebar-items:hover {
     cursor: pointer;
 }
+
+.logout {
+    background-color: #6b6b6b;
+}

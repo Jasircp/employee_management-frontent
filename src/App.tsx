@@ -7,6 +7,8 @@ import { EmployeeList } from './pages/employeeList/EmployeeList'
 import { ProtectedLayout } from './components/layout/ProtectedLayout'
 import NotFound from './components/notFound/NotFound'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { Provider } from 'react-redux';
+import { store } from './store/store'
 
 
 const router = createBrowserRouter([
@@ -37,7 +39,10 @@ const router = createBrowserRouter([
 function App() {
 
   return (
-    <RouterProvider router = {router} />
+    <Provider store={store}>
+        <RouterProvider router = {router} />
+    </Provider>
+    
   )
 }
 
