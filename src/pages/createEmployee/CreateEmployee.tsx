@@ -5,6 +5,8 @@ import { Header } from "../../components/header/Header"
 import { Button } from "../../components/button/Button"
 import { Address } from "../../components/address/Address"
 import { useDispatch } from "react-redux"
+import { useAppDispatch } from "../../store/store"
+import { addEmployee } from "../../store/employee/employeeReducer"
 import { useNavigate } from "react-router-dom"
 
 import { useState } from "react"
@@ -14,22 +16,24 @@ export const CreateEmployee = () => {
     const navigate = useNavigate();
     const [values, setValues] = useState({
             employeeId:"",
-            employeeName:"",
+            name:"",
             email:"",
             password:"",
-            age:"",
+            age:0,
 
-            joiningDate:"",
-            experience:"",
-            department:"",
+            dateOfJoining:new Date,
+            experience:0,
+            departmentId:"",
             role:"",
             status:"",
-            houseNo:"",
-            line1:"",
-            line2:"",
-            pincode:"",
+            address: {
+                houseNo:"",
+                line1:"",
+                line2:"",
+                pincode:"",
+            }
         })
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const onChange = (field:string, value:string) => {
         setValues((prev) => ({
             ...prev,
@@ -38,10 +42,12 @@ export const CreateEmployee = () => {
     }
     const handleSubmit = (e:any) => {
         e.preventDefault()
-        dispatch({
-            type:EMPLOYEE_ACTION_TYPES.ADD,
-            payload:values
-        })
+        // dispatch({
+        //     type:EMPLOYEE_ACTION_TYPES.ADD,
+        //     payload:values
+        // })
+        const action = addEmployee(values);
+        dispatch(action);
         navigate("/employees")
     }
     return (
@@ -54,7 +60,7 @@ export const CreateEmployee = () => {
                     <form action="POST">
                         <div className="form-main">
                             <Input label="Employee Name" type="text" placeholder="Employee Name" name="employee_name"
-                            onChange={(e)=> onChange("employeeName", e.target.value)}></Input>
+                            onChange={(e)=> onChange("name", e.target.value)}></Input>
                             <Input label="Email" type="email" placeholder="Email" name="employee_email"
                             onChange={(e)=>onChange("email",e.target.value)}></Input>
                             <Input label="Password" type="text" placeholder="Password" name="employee_password"
@@ -62,15 +68,15 @@ export const CreateEmployee = () => {
                             <Input label="Age" type="number" placeholder="Age" name="employee_age"
                             onChange={(e)=>onChange("age",e.target.value)}></Input>
                             <Input label="Joining date" type="text" placeholder="Joining Date" name="joining_date"
-                            onChange={(e)=> onChange("joiningDate", e.target.value)}></Input>
+                            onChange={(e)=> onChange("dateOfJoining", e.target.value)}></Input>
                             <Input label="Experience" type="number" placeholder="Experience in Years" name="experience"
                             onChange={(e)=>onChange("experience",e.target.value)}></Input>
 
-                            <SelectInput label="Department" id="department" name="department" values={["Department 1", "Department 2", "Department 3"]}
+                            <SelectInput label="Department" id="department" name="department" values={["Choose Department","Department 1", "Department 2", "Department 3"]}
                             onChange={(e)=>onChange("department",e.target.value)}></SelectInput>
-                            <SelectInput label="Role" id="role" name="role" values={["Role 1", "Role2", "Role 3"]}
+                            <SelectInput label="Role" id="role" name="role" values={["Choose Role","Role 1", "Role2", "Role 3"]}
                             onChange={(e)=>onChange("role",e.target.value)}></SelectInput>
-                            <SelectInput label="Status" id="status" name="status" values={["Active","Inactive", "Probation"]}
+                            <SelectInput label="Status" id="status" name="status" values={["Status","Active","Inactive", "Probation"]}
                             onChange={(e)=>onChange("status",e.target.value)}></SelectInput>
                             
                         </div>

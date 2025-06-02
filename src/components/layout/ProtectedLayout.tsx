@@ -4,8 +4,9 @@ import { Navigate, Outlet } from "react-router-dom"
 export const ProtectedLayout = () => {
 
     const isLoggedIn = ()=>{
-        const token = localStorage.getItem("isLoggedIn");
-        return token === "true";
+        const token = localStorage.getItem("token");
+        if(token)
+            return true;
     }
     if(!isLoggedIn()){
         return <Navigate to="/login" />

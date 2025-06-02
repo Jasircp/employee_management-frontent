@@ -37,10 +37,12 @@ export interface Employee {
   age: number;
   address: Address;
   password: string;
-  role: Role;
+  // role: Role;
+  role: string;
   dateOfJoining: Date;
   experience: number;
-  status: Status;
+  // status: Status;
+  status: string;
   departmentId: number | string;
 }
 

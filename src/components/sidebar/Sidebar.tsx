@@ -11,7 +11,7 @@ export const Sidebar = () => {
     }
 
     const handleLogOut = ()=> {
-        localStorage.setItem("isLoggedIn", "false");
+        localStorage.setItem("token", "");
         navigate("/login");
     }
     return (

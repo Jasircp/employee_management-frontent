@@ -4,27 +4,39 @@ import logo from "../../assets/images/kv-logo.png"
 import { Button } from "../../components/button/Button"
 import { LoginInput } from "../../components/loginInput/LoginInput"
 import { useState, useEffect, useRef } from "react"
+import { useLoginMutation } from "../../api-service/auth/login.api"
 
 import useLocalStorage from "../../hooks/useLocalStorage"
 import { useNavigate } from "react-router-dom"
 
 
 export const Login = () => {
-    let [userName, setUsername] = useState("")
-    let [password, setPassword] = useState('');
+    const [error, setError] = useState("")
+    const [login, {isLoading}] = useLoginMutation();
+    let [userName, setUsername] = useState("");
+    let [password, setPassword] = useState("");
     const usernameRef = useRef<HTMLInputElement>(null);
     // let mousePosition = useMousePosition();
     let [showPassword, setShowPassword] = useLocalStorage("showPassord", false)
     const navigate = useNavigate();
 
-    const handleLogIn = ()=> {
-        if(userName == "username" && password == "password"){
-            localStorage.setItem("isLoggedIn", "true");
-            navigate('/employees');
-            
-        }else{
-            alert("Invalid Credentials");
-        }
+    const handleLogIn = async ()=> {
+        // const response = await login({email:userName, password: password});
+        // if(response.data?.accessToken){
+        //     localStorage.setItem("token", response.data.accessToken);
+        //     navigate("/employees");
+        // }
+        // else{
+        //     alert("Invalid Credentials")
+        // }
+        login({email:userName, password: password}).unwrap()
+        .then((response) => {
+            localStorage.setItem("token", response.accessToken);
+            navigate("/employees");
+        })
+        .catch((error) => {
+            setError(error.data.message);
+        })
     }
 
     // let [msg, setmsg] = useState('');
@@ -57,7 +69,6 @@ export const Login = () => {
                </div> */}
             <div className="login-box">
                 <img src={logo} className="logo"/>
-                
                 <form>
                 <LoginInput type="text" id="username" name="username" placeholder="" label="Username"
                 value={userName}
@@ -71,8 +82,9 @@ export const Login = () => {
                     <label>Show Password</label>
                     <input type="checkbox" id="showpassword" name="showpassword" checked={showPassword} onChange={(e)=> setShowPassword(e.target.checked)}></input>
                 </div>
+                <p className="error">{error}</p>
                 
-                <Button className="login-button" disabled={(userName.length > 0 && password.length > 0)?false:true} description="LogIn"
+                <Button className="login-button" type="button" disabled={(userName.length > 0 && password.length > 0  && !isLoading)?false:true} description="LogIn"
                 onClick={handleLogIn}></Button>
                 </form>
             </div>

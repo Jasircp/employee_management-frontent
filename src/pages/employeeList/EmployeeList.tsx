@@ -6,87 +6,18 @@ import { Button } from "../../components/button/Button";
 import { Modal } from "../../components/modal/Modal";
 import { useMemo, useState } from 'react'
 import { useSelector } from "react-redux";
-import type { EmployeeState } from "../../store/employee/employee.types";
-
-// const employees = [
-//         {
-//             id:1,
-//             employeeName:"John Doe",
-//             joiningDate:"01/01/2025",
-//             experience:2,
-//             role:"Full Stack",
-//             status:"Probation",
-//             address:{
-//                 houseNo:"No:C-9",
-//                 line1:"T.V.K Industrial Estate",
-//                 line2:"Kerala 600032"
-//             },
-//             employeeId:"KV100"
-//         },
-//         {
-//             id:2,
-//             employeeName:"Johny Doe",
-//             joiningDate:"01/01/2025",
-//             experience:2,
-//             role:"Full Stack",
-//             status:"Inactive",
-//             address:{
-//                 houseNo:"No:C-0",
-//                 line1:"T.V.K Industrial Estate",
-//                 line2:"Kochin 600032"
-//             },
-//             employeeId:"KV101"
-//         },
-//         {
-//             id:3,
-//             employeeName:"Joe",
-//             joiningDate:"01/01/2025",
-//             experience:5,
-//             role:"Full Stack",
-//             status:"Active",
-//             address:{
-//                 houseNo:"No:C-103",
-//                 line1:"Smart City Kakkanad",
-//                 line2:"Kerala 600032"
-//             },
-//             employeeId:"KV102"
-//         },
-//         {
-//             id:4,
-//             employeeName:"Joe",
-//             joiningDate:"01/01/2025",
-//             experience:5,
-//             role:"Full Stack",
-//             status:"Active",
-//             address:{
-//                 houseNo:"No:C-103",
-//                 line1:"Smart City Kakkanad",
-//                 line2:"Kerala 600032"
-//             },
-//             employeeId:"KV102"
-//         },
-//         {
-//             id:5,
-//             employeeName:"Joe",
-//             joiningDate:"01/01/2025",
-//             experience:5,
-//             role:"Full Stack",
-//             status:"Inactive",
-//             address:{
-//                 houseNo:"No:C-103",
-//                 line1:"Smart City Kakkanad",
-//                 line2:"Kerala 600032"
-//             },
-//             employeeId:"KV102"
-//         },
-//     ]
-
+import { useAppSelector } from "../../store/store";
+import type { Employee, EmployeeState } from "../../store/employee/employee.types";
+import { useGetEmployeeListQuery,useDeleteEmployeeMutation } from "../../api-service/employees/employees.api";
 
 
 export const EmployeeList = () => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
+    const {data:employees} = useGetEmployeeListQuery({});
+    const [deleteId] = useDeleteEmployeeMutation();
+    const [idToDelete, setIdToDelete] = useState(0);
 
     const navigate = useNavigate();
     const handleCreate = ()=> {
@@ -101,25 +32,28 @@ export const EmployeeList = () => {
         navigate(`/employees/edit/${id}`)
     }
 
-    const deleteEmployee = ()=>{
+    const deleteEmployee = (id:number)=>{
         setModalIsOpen(true);
+        setIdToDelete(id);
+    }
+
+    const confirmDelete = () => {
+        deleteId({id:idToDelete});
+        setModalIsOpen(false);
     }
 
     const handleClose = ()=>{
         setModalIsOpen(false)
     }
     
-    const employees = useSelector((state:EmployeeState)=> state.employees)
+    // const employees:Employee[] = useAppSelector((state:any)=> state.employee.employees)
+
     const status = searchParams.get("status") || "all"
     const statusOptions = ["All", "Active", "Inactive", "Probation"]
 
-
-    
-
-
     const handleStatusFilterChange = (status: string) => {
         const newSearchParams = new URLSearchParams(searchParams)
-        if (status === "all" ) {
+        if (status === "All" ) {
             newSearchParams.delete("status")
 
         } else {
@@ -129,16 +63,18 @@ export const EmployeeList = () => {
         setSearchParams(newSearchParams)
     }
 
-    const filteredEmployees = useMemo(
-        () => {
-            if(status === "all") return employees
-            else return employees.filter((employee:any) => 
-                // console.log(employee.status)
-               employee.status.toLowerCase() === status
-           )
-        }, [status]
+    // const filteredEmployees = useMemo(
+    //     () => {
+    //         if(status === "all") return employees
+    //         else return employees?.filter((employee:any) => 
+    //             // console.log(employee.status)
+    //            employee.status.toLowerCase() === status
+    //        )
+    //     }, [status,employees]
+    // )
+    const filteredEmployees = employees?.filter((employee:any) => (
+        employee.status.toLowerCase() === status || status === 'all')
     )
-    
 
     return (
         <div className="employee-list-container">
@@ -148,10 +84,9 @@ export const EmployeeList = () => {
                     <div className='employee-list-title-filter-group'>
                         <label>Filter By</label>
                         <select name='status' onChange={(event)=> handleStatusFilterChange(event.target.value)}>
-                            <option value="" disabled selected> Status </option>
                             {
                                 statusOptions.map((status) => {
-                                    return <option value={status.toLowerCase()}>{status}</option>
+                                    return <option key={status} value={status.toLowerCase()}>{status}</option>
                                 })
                             }
                         </select>
@@ -173,18 +108,18 @@ export const EmployeeList = () => {
             </div>
 
             {
-                filteredEmployees.map((employee:any)=> {
-                    return <div className='employee-list-element' onClick={() => viewEmployee(employee.id)}>
-                        <p>{employee.employeeName}</p>
+                filteredEmployees?.map((employee:any)=> {
+                    return <div className='employee-list-element' key={employee.id} onClick={() => viewEmployee(employee.id)}>
+                        <p>{employee.name}</p>
                         <p>{employee.employeeId}</p>
-                        <p>{employee.joiningDate}</p>
+                        <p>{employee.dateOfJoining}</p>
                         <p>{employee.role}</p>
-                        <p><div className={`span ${employee.status.toLowerCase()}`}>{employee.status}</div></p>
+                        <div className={`span ${employee.status.toLowerCase()}`}>{employee.status}</div>
                         <p>{employee.experience} Years</p>
                         <div className='action-buttons'>
                             <img onClick={(e)=> {
                                 e.stopPropagation()
-                                deleteEmployee()}} src={deleteIcon}/>
+                                deleteEmployee(employee.id)}} src={deleteIcon}/>
                             <img onClick={(e)=> {
                                 e.stopPropagation()
                                 editEmployee(employee.id)}} src={editIcon}/>
@@ -198,10 +133,10 @@ export const EmployeeList = () => {
                     
                     <div className='delete-confirmation-box-text '>
                         <h2>Are you sure?</h2>
-                        <p>Do you really want to delete employee</p>
+                        <p>Do you really want to delete this employee</p>
                     </div>
                     <div className='delete-confirmation-box-buttons '>
-                        <Button className='button submit-button' description='Confirm' type='submit' />
+                        <Button className='button submit-button' description='Confirm' type='submit' onClick={confirmDelete}/>
                         <Button className='button reset-button' description='Cancel'  type='submit' onClick={handleClose}/>
                     </div>
                 </div>
