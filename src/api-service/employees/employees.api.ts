@@ -1,5 +1,5 @@
 import baseApi from "../api";
-import type { EmployeeById } from "./types";
+import type { CreateEmployee, EmployeeById } from "./types";
 import type { Employee } from "../../store/employee/employee.types";
 
 export const employeeApi = baseApi.injectEndpoints({
@@ -30,13 +30,13 @@ export const employeeApi = baseApi.injectEndpoints({
                 providesTags: ['EMPLOYEES']
             }),
         }),
-        createEmployee: builder.mutation<void, Employee>({
+        createEmployee: builder.mutation<void, CreateEmployee>({
             query:(employee) => ({
                 url: `/employees`,
                 method:'POST',
                 body: employee,
-                providesTags: ['EMPLOYEES']
-            })
+            }),
+            invalidatesTags: ['EMPLOYEES'],
         })
     })
 });
