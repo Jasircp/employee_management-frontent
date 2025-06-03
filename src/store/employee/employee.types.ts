@@ -13,6 +13,11 @@ export interface Address {
   pincode: string;
 }
 
+export interface Department {
+  id: number;
+  name: string
+}
+
 export const EmployeeRole = {
   UI: "UI",
   UX: "UX",
@@ -31,6 +36,7 @@ export const EmployeeStatus = {
 export type Status = (typeof EmployeeStatus)[keyof typeof EmployeeStatus];
 
 export interface Employee {
+  id: number
   employeeId: string;
   email: string;
   name: string;
@@ -43,7 +49,7 @@ export interface Employee {
   experience: number;
   // status: Status;
   status: string;
-  departmentId: number | string;
+  department: Department;
 }
 
 export const EMPLOYEE_ACTION_TYPES = {

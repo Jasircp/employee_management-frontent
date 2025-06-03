@@ -8,12 +8,18 @@ import { useDispatch } from "react-redux"
 import { useAppDispatch } from "../../store/store"
 import { addEmployee } from "../../store/employee/employeeReducer"
 import { useNavigate } from "react-router-dom"
-
+import { useCreateEmployeeMutation } from "../../api-service/employees/employees.api"
+import { useGetDepartmentListQuery } from "../../api-service/departments/departments.api"
 import { useState } from "react"
 import { EMPLOYEE_ACTION_TYPES } from "../../store/employee/employee.types"
 
 export const CreateEmployee = () => {
     const navigate = useNavigate();
+    const { data:departments } = useGetDepartmentListQuery()
+    const [addEmp] = useCreateEmployeeMutation()
+
+
+    const departmentOptions = departments?.map(dept => {return {value:dept.id,name:dept.name}})
     const [values, setValues] = useState({
             employeeId:"",
             name:"",
@@ -33,6 +39,18 @@ export const CreateEmployee = () => {
                 pincode:"",
             }
         })
+    const roleOptions = [
+        {value:"UI", name:"UI"},
+        {value:"UX", name:"UX"},
+        {value:"DEVELOPER", name:"DEVELOPER"},
+        {value:"HR", name:"HR"}
+    ]
+
+    const statusOptions = [
+        {value:"ACTIVE", name:"ACTIVE"},
+        {value:"INACTIVE", name:"INACTIVE"},
+        {value:"PROBATION", name:"PROBATION"}
+    ]
     const dispatch = useAppDispatch();
     const onChange = (field:string, value:string) => {
         setValues((prev) => ({
@@ -40,15 +58,10 @@ export const CreateEmployee = () => {
             [field]:value
         }))
     }
-    const handleSubmit = (e:any) => {
+    const handleSubmit = async(e:any) => {
         e.preventDefault()
-        // dispatch({
-        //     type:EMPLOYEE_ACTION_TYPES.ADD,
-        //     payload:values
-        // })
-        const action = addEmployee(values);
-        dispatch(action);
-        navigate("/employees")
+        await addEmp(values).unwrap();
+        //navigate('/employees')
     }
     return (
         <>
@@ -72,11 +85,11 @@ export const CreateEmployee = () => {
                             <Input label="Experience" type="number" placeholder="Experience in Years" name="experience"
                             onChange={(e)=>onChange("experience",e.target.value)}></Input>
 
-                            <SelectInput label="Department" id="department" name="department" values={["Choose Department","Department 1", "Department 2", "Department 3"]}
+                            <SelectInput label="Department" id="department" name="department" values={departmentOptions}
                             onChange={(e)=>onChange("department",e.target.value)}></SelectInput>
-                            <SelectInput label="Role" id="role" name="role" values={["Choose Role","Role 1", "Role2", "Role 3"]}
+                            <SelectInput label="Role" id="role" name="role" values={roleOptions}
                             onChange={(e)=>onChange("role",e.target.value)}></SelectInput>
-                            <SelectInput label="Status" id="status" name="status" values={["Status","Active","Inactive", "Probation"]}
+                            <SelectInput label="Status" id="status" name="status" values={statusOptions}
                             onChange={(e)=>onChange("status",e.target.value)}></SelectInput>
                             
                         </div>

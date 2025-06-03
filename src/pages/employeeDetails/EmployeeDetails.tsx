@@ -4,59 +4,15 @@ import { Header } from "../../components/header/Header";
 import editIcon from "../../assets/images/pencil.png"
 import { EmployeeData } from "../../components/employeeData/EmployeedData";
 import { useEffect } from "react";
+import { useGetEmployeeByIdQuery } from "../../api-service/employees/employees.api";
 
 export const EmployeeDetails = () => {
     const { id }  = useParams();
+    const { data:employee } = useGetEmployeeByIdQuery({id:Number(id)});
     const navigate = useNavigate()
     const handleEdit = ()=> {
         navigate(`/employees/edit/${id}`);
     }
-    const employees = [
-        {
-            id:1,
-            employeeName:"John Doe",
-            joiningDate:"01/01/2025",
-            experience:2,
-            role:"Full Stack",
-            status:"Probation",
-            address:{
-                houseNo:"No:C-9",
-                line1:"T.V.K Industrial Estate",
-                line2:"Kerala 600032"
-            },
-            employeeId:"KV100"
-        },
-        {
-            id:2,
-            employeeName:"Johny Doe",
-            joiningDate:"01/01/2025",
-            experience:2,
-            role:"Full Stack",
-            status:"Inactive",
-            address:{
-                houseNo:"No:C-0",
-                line1:"T.V.K Industrial Estate",
-                line2:"Kochin 600032"
-            },
-            employeeId:"KV101"
-        },
-        {
-            id:3,
-            employeeName:"Joe",
-            joiningDate:"01/01/2025",
-            experience:5,
-            role:"Full Stack",
-            status:"Active",
-            address:{
-                houseNo:"No:C-103",
-                line1:"Smart City Kakkanad",
-                line2:"Kerala 600032"
-            },
-            employeeId:"KV102"
-        }
-    ]
-    
-    const employee = employees.find(emp => emp.id == (Number(id)))
     if(!employee)
         return <div className="employee-details-container">No Such Employee</div>
     
@@ -71,8 +27,8 @@ export const EmployeeDetails = () => {
                 </div>
                 <div className="employee-details-row-container">
                     <div className="employee-details-row">
-                        <EmployeeData label="Employee Name" value={employee.employeeName}/>
-                        <EmployeeData label="Joining Date" value={employee.joiningDate}/>
+                        <EmployeeData label="Employee Name" value={employee.name}/>
+                        <EmployeeData label="Joining Date" value={employee.dateOfJoining}/>
                         <EmployeeData label="Experience" value={employee.experience}/>
                         <EmployeeData label="Role" value={employee.role}/>
                         <div className="employee-details-status">
@@ -84,9 +40,10 @@ export const EmployeeDetails = () => {
                     <div className="employee-details-row">
                         <div className="employee-details-address">
                             <label>Address</label>
-                            <p>{employee.address.houseNo}</p>
-                            <p>{employee.address.line1}</p>
-                            <p>{employee.address.line2}</p>
+                            <p>{employee?.address.houseNo}</p>
+                            <p>{employee?.address.line1}</p>
+                            <p>{employee?.address.line2}</p>
+                            <p>{employee?.address.pincode}</p>
                         </div>
                         <EmployeeData label="Employee ID" value={employee.employeeId}/>
                     </div>
