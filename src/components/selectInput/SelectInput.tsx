@@ -1,6 +1,6 @@
 import "./SelectInput.css"
 
-export const SelectInput = (props: {label:string, id:string, name:string, selected?:string, values: {value:number | string, name:string}[], onChange?: (event:React.ChangeEvent<HTMLSelectElement>) => void}) => {
+export const SelectInput = (props: {label:string, id:string, name:string, selected?:string | number, values: {value:number | string, name:string}[], onChange?: (event:React.ChangeEvent<HTMLSelectElement>) => void}) => {
     return(
         <div className="form-group">
             <label htmlFor={props.id}>{props.label}</label>

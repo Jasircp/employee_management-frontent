@@ -45,7 +45,7 @@ export interface Employee {
   password: string;
   // role: Role;
   role: string;
-  dateOfJoining: Date;
+  dateOfJoining: string;
   experience: number;
   // status: Status;
   status: string;

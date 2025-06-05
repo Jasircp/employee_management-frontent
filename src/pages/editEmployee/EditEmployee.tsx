@@ -16,7 +16,7 @@ export const EditEmployee = () => {
   const { data: departments } = useGetDepartmentListQuery();
   const [edit] = useUpdateEmployeeMutation();
 
-  const departmentOptions = departments?.map((dept) => ({ value: dept.id, name: dept.name }));
+  const departmentOptions = departments?.map((dept: { id: any; name: any; }) => ({ value: dept.id, name: dept.name }));
 
   const roleOptions = [
     { value: "UI", name: "UI" },
@@ -57,7 +57,7 @@ export const EditEmployee = () => {
 
   useEffect(() => {
   if (employee) {
-    const formattedDate:Date = employee.dateOfJoining?.split("T")[0]; // gets only 'YYYY-MM-DD'
+    const formattedDate: string = employee.dateOfJoining?.split("T")[0]; // gets only 'YYYY-MM-DD'
 
     setValues({
       id: employee.id,
@@ -112,7 +112,7 @@ export const EditEmployee = () => {
 
   const handleUpdate = async () => {
     try {
-      const updatedDept = departments?.find((d) => d.id === values.departmentId);
+      const updatedDept = departments?.find((d: { id: number; }) => d.id === values.departmentId);
       const payload = {
         ...values,
         department: updatedDept || values.department, // fallback in case department list failed

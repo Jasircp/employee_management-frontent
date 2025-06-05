@@ -13,7 +13,7 @@ export const CreateEmployee = () => {
   const { data: departments } = useGetDepartmentListQuery();
   const [addEmp] = useCreateEmployeeMutation();
 
-  const departmentOptions = departments?.map(dept => ({ value: dept.id, name: dept.name }));
+  const departmentOptions = departments?.map((dept: { id: any; name: any }) => ({ value: dept.id, name: dept.name }));
 
   const [values, setValues] = useState({
     employeeId: "",
@@ -21,9 +21,9 @@ export const CreateEmployee = () => {
     email: "",
     password: "",
     age: 0,
-    dateOfJoining: new Date().toISOString().split('T')[0], // ✅ formatted string
+    dateOfJoining: new Date().toISOString().split('T')[0], // date conversion
     experience: 0,
-    departmentId: "",
+    departmentId: 0,
     role: "",
     status: "",
     address: {
@@ -47,7 +47,6 @@ export const CreateEmployee = () => {
     { value: "PROBATION", name: "PROBATION" }
   ];
 
-  // ✅ General field change handler
   const onChange = (field: string, value: string) => {
     if (["age", "experience"].includes(field)) {
       setValues(prev => ({ ...prev, [field]: Number(value) }));
@@ -58,7 +57,7 @@ export const CreateEmployee = () => {
     }
   };
 
-  // ✅ Address field handler
+  //for address change
   const onAddressChange = (field: string, value: string) => {
     setValues(prev => ({
       ...prev,
@@ -72,7 +71,7 @@ export const CreateEmployee = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const selectedDept = departments?.find(dept => dept.id === Number(values.departmentId));
+    const selectedDept = departments?.find((dept: { id: number }) => dept.id === Number(values.departmentId));
     if (!selectedDept) {
       alert("Please select a department");
       return;
