@@ -8,44 +8,44 @@ import { useMemo, useState } from 'react'
 import { useSelector } from "react-redux";
 import { useAppSelector } from "../../store/store";
 import type { Employee, EmployeeState } from "../../store/employee/employee.types";
-import { useGetEmployeeListQuery,useDeleteEmployeeMutation } from "../../api-service/employees/employees.api";
+import { useGetEmployeeListQuery, useDeleteEmployeeMutation } from "../../api-service/employees/employees.api";
 
 
 export const EmployeeList = () => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
-    const {data:employees} = useGetEmployeeListQuery({});
+    const { data: employees } = useGetEmployeeListQuery({});
     const [deleteId] = useDeleteEmployeeMutation();
     const [idToDelete, setIdToDelete] = useState(0);
 
     const navigate = useNavigate();
-    const handleCreate = ()=> {
+    const handleCreate = () => {
         navigate("/employees/create");
     }
 
-    const viewEmployee = (id:number)=>{
+    const viewEmployee = (id: number) => {
         navigate(`/employees/details/${id}`)
     }
 
-    const editEmployee = (id:number)=>{
+    const editEmployee = (id: number) => {
         navigate(`/employees/edit/${id}`)
     }
 
-    const deleteEmployee = (id:number)=>{
+    const deleteEmployee = (id: number) => {
         setModalIsOpen(true);
         setIdToDelete(id);
     }
 
     const confirmDelete = () => {
-        deleteId({id:idToDelete});
+        deleteId({ id: idToDelete });
         setModalIsOpen(false);
     }
 
-    const handleClose = ()=>{
+    const handleClose = () => {
         setModalIsOpen(false)
     }
-    
+
     // const employees:Employee[] = useAppSelector((state:any)=> state.employee.employees)
 
     const status = searchParams.get("status") || "all"
@@ -53,7 +53,7 @@ export const EmployeeList = () => {
 
     const handleStatusFilterChange = (status: string) => {
         const newSearchParams = new URLSearchParams(searchParams)
-        if (status === "All" ) {
+        if (status === "All") {
             newSearchParams.delete("status")
 
         } else {
@@ -72,7 +72,7 @@ export const EmployeeList = () => {
     //        )
     //     }, [status,employees]
     // )
-    const filteredEmployees = employees?.filter((employee:any) => (
+    const filteredEmployees = employees?.filter((employee: any) => (
         employee.status.toLowerCase() === status || status === 'all')
     )
 
@@ -83,7 +83,7 @@ export const EmployeeList = () => {
                 <div className='employee-list-title-input-group'>
                     <div className='employee-list-title-filter-group'>
                         <label>Filter By</label>
-                        <select name='status' onChange={(event)=> handleStatusFilterChange(event.target.value)}>
+                        <select name='status' onChange={(event) => handleStatusFilterChange(event.target.value)}>
                             {
                                 statusOptions.map((status) => {
                                     return <option key={status} value={status.toLowerCase()}>{status}</option>
@@ -108,7 +108,7 @@ export const EmployeeList = () => {
             </div>
 
             {
-                filteredEmployees?.map((employee:any)=> {
+                filteredEmployees?.map((employee: any) => {
                     return <div className='employee-list-element' key={employee.id} onClick={() => viewEmployee(employee.id)}>
                         <p>{employee.name}</p>
                         <p>{employee.employeeId}</p>
@@ -117,27 +117,29 @@ export const EmployeeList = () => {
                         <div className={`span ${employee.status.toLowerCase()}`}>{employee.status}</div>
                         <p>{employee.experience} Years</p>
                         <div className='action-buttons'>
-                            <img onClick={(e)=> {
+                            <img onClick={(e) => {
                                 e.stopPropagation()
-                                deleteEmployee(employee.id)}} src={deleteIcon}/>
-                            <img onClick={(e)=> {
+                                deleteEmployee(employee.id)
+                            }} src={deleteIcon} />
+                            <img onClick={(e) => {
                                 e.stopPropagation()
-                                editEmployee(employee.id)}} src={editIcon}/>
+                                editEmployee(employee.id)
+                            }} src={editIcon} />
                         </div>
                     </div>
                 })
             }
 
-            <Modal isOpen = {modalIsOpen} onClose={handleClose}>
+            <Modal isOpen={modalIsOpen} onClose={handleClose}>
                 <div className='delete-confirmation-box'>
-                    
+
                     <div className='delete-confirmation-box-text '>
                         <h2>Are you sure?</h2>
                         <p>Do you really want to delete this employee</p>
                     </div>
                     <div className='delete-confirmation-box-buttons '>
-                        <Button className='button submit-button' description='Confirm' type='submit' onClick={confirmDelete}/>
-                        <Button className='button reset-button' description='Cancel'  type='submit' onClick={handleClose}/>
+                        <Button className='button submit-button' description='Confirm' type='submit' onClick={confirmDelete} />
+                        <Button className='button reset-button' description='Cancel' type='submit' onClick={handleClose} />
                     </div>
                 </div>
             </Modal>

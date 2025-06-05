@@ -56,34 +56,34 @@ export const EditEmployee = () => {
   });
 
   useEffect(() => {
-  if (employee) {
-    const formattedDate: string = employee.dateOfJoining?.split("T")[0]; // gets only 'YYYY-MM-DD'
+    if (employee) {
+      const formattedDate: string = employee.dateOfJoining?.split("T")[0]; // gets only 'YYYY-MM-DD'
 
-    setValues({
-      id: employee.id,
-      name: employee.name,
-      email: employee.email,
-      password: employee.password,
-      age: employee.age,
-      employeeId: employee.employeeId,
-      dateOfJoining: formattedDate || "", // formatted here
-      experience: employee.experience,
-      departmentId: employee.department?.id || 0,
-      role: employee.role,
-      status: employee.status,
-      department: {
-        id: employee.department?.id || 0,
-        name: employee.department?.name || ""
-      },
-      address: {
-        houseNo: employee.address?.houseNo || "",
-        line1: employee.address?.line1 || "",
-        line2: employee.address?.line2 || "",
-        pincode: employee.address?.pincode || ""
-      }
-    });
-  }
-}, [employee]);
+      setValues({
+        id: employee.id,
+        name: employee.name,
+        email: employee.email,
+        password: employee.password,
+        age: employee.age,
+        employeeId: employee.employeeId,
+        dateOfJoining: formattedDate || "",
+        experience: employee.experience,
+        departmentId: employee.department?.id || 0,
+        role: employee.role,
+        status: employee.status,
+        department: {
+          id: employee.department?.id || 0,
+          name: employee.department?.name || ""
+        },
+        address: {
+          houseNo: employee.address?.houseNo || "",
+          line1: employee.address?.line1 || "",
+          line2: employee.address?.line2 || "",
+          pincode: employee.address?.pincode || ""
+        }
+      });
+    }
+  }, [employee]);
 
 
   const onChange = (field: string, value: string) => {
@@ -115,7 +115,7 @@ export const EditEmployee = () => {
       const updatedDept = departments?.find((d: { id: number; }) => d.id === values.departmentId);
       const payload = {
         ...values,
-        department: updatedDept || values.department, // fallback in case department list failed
+        department: updatedDept || values.department,
       };
 
       await edit(payload).unwrap();
